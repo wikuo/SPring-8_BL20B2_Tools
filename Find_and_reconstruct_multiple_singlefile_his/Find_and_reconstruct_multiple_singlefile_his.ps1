@@ -12,6 +12,8 @@ This works only for data with a single standard tomography per .his file, that c
 #>
 
 ## Inputs
+#region
+
 # Enter the top level directory to be searched for .his files:
 $InputDirectory = "C:\Data\BL20B2_projection_data"
 
@@ -30,7 +32,17 @@ $RotationAngleRecoVolume = 0
 # Enter filename of the Hamamatsu .his files containing the projections. By default operating procedure, this would be "a.his" at SPring-8 BL20B2:
 $HISFilename = "a.his"
 
-# You can declare a list of folders manually, as opposed to searching for a.HIS files. In that case, uncomment this block, and comment out the recursive search in the next lines.
+#endregion
+
+
+## Generate file list
+#region
+
+# Recursively searches for all .his raw files and stores their folder paths in array
+$ListOfScanfolders = Get-Childitem -Path $InputDirectory -Recurse -include $HISFilename
+$ListOfScanfolders = $ListOfScanfolders.DirectoryName
+
+# Alternatively, you can declare a list of folders manually, as opposed to searching for a.HIS files. In that case, uncomment the block below and enter the folder names into the array:
 <#
 $ListOfScanfolders = @(
 "Dataset1"
@@ -39,11 +51,11 @@ $ListOfScanfolders = @(
 )
 #>
 
-## Processing
+#endregion
 
-# Recursively searches for all .his raw files and stores their folder paths in array
-$ListOfScanfolders = Get-Childitem -Path $InputDirectory -Recurse -include $HISFilename
-$ListOfScanfolders = $ListOfScanfolders.DirectoryName
+
+## Reconstruction
+#region
 
 # Iterates over each folder containing a .his file and reconstructs with automatic center of rotation determination
 foreach ($ScanFolder in $ListOfScanfolders)
@@ -67,3 +79,5 @@ foreach ($ScanFolder in $ListOfScanfolders)
 	hp_tg_g_c $ScanFolder $PixelSize $CenterOfRotation $RotationAngleRecoVolume $OutputDirectoryName
 		
 }
+
+#endregion
