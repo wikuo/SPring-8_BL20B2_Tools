@@ -77,7 +77,10 @@ foreach ($ScanFolder in $ListOfScanfolders)
 	
 	# Reconstructs the whole 3D volume
 	hp_tg_g_c $ScanFolder $PixelSize $CenterOfRotation $RotationAngleRecoVolume $OutputDirectoryName
-		
+
+	# Delete the unpacked .img projection files. This line is commented to prevent accidental deletion of .img files by people running the script without reading it.
+#	del *.img
+	
 }
 
 #endregion
