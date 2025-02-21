@@ -29,8 +29,8 @@ $PixelSize = 7.99
 # Enter the angle to rotate the volume counterclockwise within the dataset during reconstruction:
 $RotationAngleRecoVolume = 0
 
-# Enter filename of the Hamamatsu .his files containing the projections. By default operating procedure, this would be "a.his" at SPring-8 BL20B2:
-$HISFilename = "a.his"
+# Enter filename of the Hamamatsu .his files containing the projections. Wildcards * and ? are supported by the PowerShell Get-ChildItem command:
+$HISFilename = "*.his"
 
 #endregion
 
@@ -39,10 +39,10 @@ $HISFilename = "a.his"
 #region
 
 # Recursively searches for all .his raw files and stores their folder paths in array
-$ListOfScanfolders = Get-Childitem -Path $InputDirectory -Recurse -include $HISFilename
+$ListOfScanfolders = Get-ChildItem -Path $InputDirectory -Recurse -include $HISFilename
 $ListOfScanfolders = $ListOfScanfolders.DirectoryName
 
-# Alternatively, you can declare a list of folders manually, as opposed to searching for a.HIS files. In that case, uncomment the block below and enter the folder names into the array:
+# Alternatively, you can declare a list of folders manually, as opposed to searching for .his files. In that case, uncomment the block below and enter the folder names into the array:
 <#
 $ListOfScanfolders = @(
 "Dataset1"
