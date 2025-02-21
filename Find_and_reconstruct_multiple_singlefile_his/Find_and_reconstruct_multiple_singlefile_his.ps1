@@ -42,6 +42,11 @@ $HISFilename = "*.his"
 $ListOfScanfolders = Get-ChildItem -Path $InputDirectory -Recurse -include $HISFilename
 $ListOfScanfolders = $ListOfScanfolders.DirectoryName
 
+# Optional: Filter folder paths for a specific string
+<#
+$ListOfScanfolders = @($ListOfScanfolders) -match "SearchString"
+#>
+
 # Alternatively, you can declare a list of folders manually, as opposed to searching for .his files. In that case, uncomment the block below and enter the folder names into the array:
 <#
 $ListOfScanfolders = @(
