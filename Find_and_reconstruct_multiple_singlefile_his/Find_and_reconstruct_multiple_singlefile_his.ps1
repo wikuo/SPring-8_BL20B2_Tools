@@ -92,9 +92,11 @@ foreach ($ScanFolder in $ListOfScanfolders)
 
 	# Delete the unpacked .img projection files. This line is commented to prevent accidental deletion of .img files by people running the script without reading it.
 	if ($DeleteImgFiles){
-		Write-Output ("Deleting all .img files")
+		Write-Output ("Deleting all .img files:")
 		del *.img
 	}
+	
+	Write-Output ("Done")
 	
 }
 
