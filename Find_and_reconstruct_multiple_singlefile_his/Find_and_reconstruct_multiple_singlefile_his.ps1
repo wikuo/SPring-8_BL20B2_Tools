@@ -32,6 +32,10 @@ $RotationAngleRecoVolume = 0
 # Enter filename of the Hamamatsu .his files containing the projections. Wildcards * and ? are supported by the PowerShell Get-ChildItem command:
 $HISFilename = "*.his"
 
+# Set wheter you wish to delete the unpacked .img projection files after reconstruction is done. Booleans in PowerShell are $true and $false
+# WARNING: This will execute a "del *.img" command. Any *.img file in the folder will be deleted, including ones unrelated to the reconstruction.
+$DeleteImgFiles = $false
+
 #endregion
 
 
@@ -67,13 +71,15 @@ foreach ($ScanFolder in $ListOfScanfolders)
 {
 	
 	cd $ScanFolder
-	
+		
 	# Calls the conv.bat file automatically generated after acquisition to unpack .his file into individual .img projection files, rename them and averaging the flat- and dark-field projections.
+	Write-Output ("Unpacking .his file:")
 	./conv.bat
 	
 	# Reconstructs a single slice (1st argument of ct_rec_g_c, zero-indexed), and stores each line as an element in an array $SingleRecoTerminalOutput
+	Write-Output ("Finding center of rotation, reconstructing single slice:")
 	$SingleRecoTerminalOutput = ct_rec_g_c $SingleSliceRecoSlice
-		
+	
 	# Calls the 2nd element of $SingleRecoTerminalOutput, splits the tab-separated values in the string to a new array and stores it in a variable
 	$SingleRecoTerminalOutputSecondLine = $SingleRecoTerminalOutput[1].Split()
 	$CenterOfRotation = $SingleRecoTerminalOutputSecondLine[2]
@@ -81,10 +87,14 @@ foreach ($ScanFolder in $ListOfScanfolders)
 	mkdir $OutputDirectoryName
 	
 	# Reconstructs the whole 3D volume
+	Write-Output ("Reconstructing full dataset:")
 	hp_tg_g_c $ScanFolder $PixelSize $CenterOfRotation $RotationAngleRecoVolume $OutputDirectoryName
 
 	# Delete the unpacked .img projection files. This line is commented to prevent accidental deletion of .img files by people running the script without reading it.
-#	del *.img
+	if ($DeleteImgFiles){
+		Write-Output ("Deleting all .img files")
+		del *.img
+	}
 	
 }
 
