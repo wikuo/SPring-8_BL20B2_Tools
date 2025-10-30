@@ -90,7 +90,7 @@ foreach ($ScanFolder in $ListOfScanfolders)
 	Write-Output ("Reconstructing full dataset:")
 	hp_tg_g_c $ScanFolder $PixelSize $CenterOfRotation $RotationAngleRecoVolume $OutputDirectoryName
 
-	# Delete the unpacked .img projection files. This line is commented to prevent accidental deletion of .img files by people running the script without reading it.
+	# Delete the unpacked .img projection files, if the option is set.
 	if ($DeleteImgFiles){
 		Write-Output ("Deleting all .img files:")
 		del *.img
