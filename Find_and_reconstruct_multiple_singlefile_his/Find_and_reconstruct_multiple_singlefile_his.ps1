@@ -83,6 +83,7 @@ foreach ($ScanFolder in $ListOfScanfolders)
 	# Calls the 2nd element of $SingleRecoTerminalOutput, splits the tab-separated values in the string to a new array and stores it in a variable
 	$SingleRecoTerminalOutputSecondLine = $SingleRecoTerminalOutput[1].Split()
 	$CenterOfRotation = $SingleRecoTerminalOutputSecondLine[2]
+	$CenterOfRotation | Out-File -FilePath CenterOfRotation.txt
 	
 	mkdir $OutputDirectoryName
 	
